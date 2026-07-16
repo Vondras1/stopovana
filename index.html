@@ -25,7 +25,7 @@
         }
         header h1 {
             margin: 0;
-            font-size: 2em;
+            font-size: 4em;
         }
         header p {
             font-size: 1em;
@@ -185,6 +185,40 @@
         .contact-info a:hover {
             text-decoration: underline;
         }
+
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 10px;
+            color: #cccccc;
+            border: 1px solid #555555;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .download-button:hover {
+            color: #ffffff;
+            border-color: #888888;
+        }
+
+        .task-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 20px auto;
+            border-radius: 4px;
+        }
+
+        .image-big {
+            max-width: 500px;
+        }
+
+        .image-small {
+            max-width: 350px;
+        }
         footer {
             text-align: center;
             padding: 30px 0;
@@ -284,7 +318,7 @@
     <nav>
         <a href="#about">Základní informace</a>
         <a href="#tasks">Úkoly</a>
-        <a href="#contact">Contact</a>
+        <a href="#contact">Kontakt</a>
     </nav>
     <header>
         <h1>Stopovaná</h1>
@@ -327,21 +361,33 @@
 
                     <div class="task-content hidden">
                         <p>
-                            Ahoj! Tak začínáme. Ovšem než vyrazíte, tak musíte zjistit kam vlastně jdete. 
-                            K tomu by Vám snad mohla pomoci tajenka: https://puzzel.org/cs/crossword/play?p=-OwSZOEQAr7Z8qQ4Hp6G. 
-                            Ta vám pak odemkne i druhý úkol. A pozor, máte na to už jen   
+                            Ahoj! Tak začínáme. A kde jinde než v Jičíně. Ve městě, které zažilo svůj největší rozkvět v 17. století za vlády 
+                            Albrechta z Valdštejna, tehdy jednoho z nejmocnějších a nejbohatších mužů v celé habsburské monarchii 
+                            (zřejmě i nejbohatšího Čecha všech dob), který si Jičín zvolil za hlavní město svého Frýdlantského vévodství. 
+                            Naše město se tak tenkrát, třebaže jen na jednu dekádu, stalo jedním z nejdůležitějších míst střední Evropy. 
+                            Do města tehdy přicházelo mnoho řemeslníků, bankéřů, architektů i delegace zahraničních velvyslanců a spolu s 
+                            tím započala i velká přestavba. Začala výstavba mnoha nových staveb, a i když řada z nich nikdy nebyla dokončena 
+                            podle původních plánů, stojí tu dodnes. Například kostel sv. Jakuba (původně zamýšlený jako katedrála), 
+                            Valdštejnská lodžie, lipová alej, atd... Aby však pro nové stavby vzniklo místo, bylo třeba ty staré zbořit. 
+                            Tento osud měl potkat i budovu, ke které se za moment vydáte. Pokud ještě nevíte, kterou myslíme (v což doufáme), 
+                            pusťte se do křížovky. 
+                        </p>
+                        <p>
+                            <a href="files/krizovka_brana.pdf" download class="download-button">
+                                <i class="fas fa-download"></i> Stáhnout křížovku
+                            </a>
+                        </p>
+                        <p>
+                            Tajenka vám pak odemkne i druhý úkol. A pozor, máte na to už jen
                         </p>
                         <p>
                             <span id="smallCountdown" class="countdown-inline">Načítám...</span>.
-                        </p>
-                        <p>
-
                         </p>
 
                     </div>
                 </div>
 
-                <div class="task" data-password="Valdštejnská brána">
+                <div class="task" data-password="Valdická brána">
                     <h3>Úkol 2</h3>
 
                     <div class="task-unlock">
@@ -352,12 +398,35 @@
 
                     <div class="task-content hidden">
                         <p>
-                            Zabalte si plavky, ručník a něco na večerní procházku městem.
+                            Bravo, a ano, teď vás čeká přesně 156 schodů až na ochoz Valdické brány. A dolů vůbec nespěchejte. 
+                            Nejprve vás totiž čeká několik úkolů.
+                        </p>
+                        <h4>1.</h4>
+                        <p>
+                            Bezpečnost na prvním místě. Takže nezapomeňte, že skákání z vyhlídkové věže se nedoporučuje! A hned po zakoupení vstupenky 
+                            si zjistěte, kdo se ujímá případného skokana, pokud teda ještě žije. (A zapamatujete si to, mohlo by se to ještě hodit)
+                        </p>
+                        <p>
+                            <img src="images/skokan_brana.jpeg" alt="Skokan na bráně" class="task-image image-big">
+                        </p>
+                        <h4>2.</h4>
+                        <p>
+                            V roce 2022 proběhlo v Kalingradské oblasti referendum, ve kterém podle ověřených zdrojů hlasovalo přes 100% obyvatel této 
+                            ruské enkávy pro připojení k České republice a k opětovnému přejmenování Kalingradu na Královec. Toto jméno město dostalo 
+                            na počest Přemysla Otakara II. po jeho úspěšné křížové výpravě. Dokonce už i České dráhy zavedly přímou linku:
+                        </p>
+                        <p>
+                            <img src="images/kralovec_brana.jpeg" alt="Královec na bráně" class="task-image image-small">
+                        </p>
+                        <p>
+                            Neváhejte proto a hned si na mapě najděte, kam za rok vyrážíte k moři. Až to zvládnete, tak se tím směrem rovnou podívejte i z 
+                            Valdické brány. Nechte krajinu vést vaše oči a brzy byste měli uvidět červeno/oranžovou střechu s věžičkou. Jde o bývalý klášter. 
+                            Jak se jmenoval řád, ke kterému patřil? Tedy ****** řád - a to vám odemkne další úkol.
                         </p>
                     </div>
                 </div>
 
-                <div class="task" data-password="vino">
+                <div class="task" data-password="kartuziánský">
                     <h3>Úkol 3</h3>
 
                     <div class="task-unlock">
@@ -392,10 +461,10 @@
             </div>
         </section>
         <section id="contact">
-            <h2>Contact</h2>
+            <h2>Kontakt</h2>
             <div class="contact-info">
                 <div class="contact-item">
-                    <i class="fas fa-envelope"></i> <a href="mailto:vojtech.vondracek10@gmail.com">vojtech.vondracek10@gmail.com</a>
+                    <i class="fas fa-envelope"></i> <a href="mailto:stopovana@gmail.com">stopovana@gmail.com</a>
                 </div>
             </div>
         </section>
@@ -430,8 +499,6 @@
         });
 
         // Countdown
-        const targetDate = new Date("2026-09-04T15:00:00+02:00").getTime();
-
         function updateCountdown(elementId, targetDateString, expiredText = "Je to tady!") {
             const targetDate = new Date(targetDateString).getTime();
             const now = new Date().getTime();
@@ -458,12 +525,20 @@
         }
 
         function updateAllCountdowns() {
-            updateCountdown("countdown", "2026-09-04T15:00:00+02:00");
-            updateCountdown("smallCountdown", "2026-09-04T18:00:00+02:00", "Smůla, snad to vyjde příště!");
+            updateCountdown("countdown", "2026-09-03T14:00:00+02:00");
+            updateCountdown("smallCountdown", "2026-09-03T16:00:00+02:00", "Smůla, snad to vyjde příště!");
         }
 
         updateAllCountdowns();
         setInterval(updateAllCountdowns, 1000);
+
+        function normalizePassword(password) {
+            return password
+                .trim()                          // odstraní mezery na začátku a konci
+                .toLowerCase()                   // převede na malá písmena
+                .normalize("NFD")                // rozdělí písmeno a diakritiku
+                .replace(/[\u0300-\u036f]/g, ""); // odstraní diakritiku
+        }
 
         // Unlock tasks by password
         // Unlock each task separately
@@ -477,7 +552,7 @@
             function unlockTask() {
                 const enteredPassword = input.value;
 
-                if (enteredPassword === correctPassword) {
+                if (normalizePassword(enteredPassword) === normalizePassword(correctPassword)) {
                     content.classList.remove("hidden");
                     message.textContent = "Správně! Úkol je odemčený.";
                     input.value = "";
