@@ -3,117 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stopovaná</title>
-    <link rel="icon" type="image/png" href="images/jezevec8.png">
+    <title>Kulatá stopovaná – návrh 1</title>
+    <link rel="icon" type="image/png" href="../images/jezevec8.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+
+        :root {
+            --bg: #FFFDEB;
+            --surface: #FFFFF5;
+            --surface-strong: #EAF2D8;
+            --text: #17351F;
+            --muted: #65745F;
+            --accent: #4C763B;
+            --border: #D6E1C3;
+            --nav-bg: #FFFFF5;
+            --button-bg: #4C763B;
+            --button-hover: #3E6530;
+            --footer-bg: #B0CE88;
+            --input-bg: #FFFFFF;
+        }
+
+        body[data-theme="dark"] {
+            --bg: #2C3930;
+            --surface: #3F4F44;
+            --surface-strong: #4A5A4F;
+            --text: #F3EFE7;
+            --muted: #DCD7C9;
+            --accent: #D6A278;
+            --border: #607067;
+            --nav-bg: #35443A;
+            --button-bg: #A27B5C;
+            --button-hover: #B38A68;
+            --footer-bg: #3F4F44;
+            --input-bg: #F7F3EA;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+        html, body { overflow-x: hidden; }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
+
         .container {
             width: 90%;
             max-width: 1200px;
-            margin: auto;
+            margin: 0 auto;
             padding: 20px;
         }
+
         header {
             text-align: center;
-            padding: 75px 0 20px;
+            padding: 85px 0 22px;
         }
+
         header h1 {
             margin: 0;
-            font-size: 4em;
+            color: var(--accent);
+            font-size: clamp(2.6rem, 6vw, 4.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.04em;
         }
-        header p {
-            font-size: 1em;
-            color: #cccccc;
+
+        .route-logo {
+            display: block;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 20px;
+            object-fit: contain;
         }
-        .menu-toggle {
+
+        .route-kicker {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .menu-toggle,
+        .theme-toggle {
             position: fixed;
             top: 20px;
-            right: 20px;
             width: 40px;
             height: 40px;
-            background-color: #4b4b4b;
-            border-radius: 4px;
+            border: 0;
+            background: var(--button-bg);
+            color: #fff;
+            border-radius: 6px;
             cursor: pointer;
             z-index: 1000;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s ease;
         }
-        .menu-toggle:hover {
-            background-color: #5c5c5c;
-        }
-        .menu-toggle div {
+
+        .menu-toggle:hover,
+        .theme-toggle:hover { background: var(--button-hover); }
+
+        .menu-toggle { right: 20px; }
+        .theme-toggle { right: 70px; font-size: 1.1rem; }
+
+        .menu-toggle span,
+        .menu-toggle span::before,
+        .menu-toggle span::after {
             width: 20px;
             height: 2px;
-            background-color: white;
-            position: relative;
+            background: #fff;
         }
-        .menu-toggle div::before,
-        .menu-toggle div::after {
-            content: '';
+
+        .menu-toggle span { position: relative; }
+        .menu-toggle span::before,
+        .menu-toggle span::after {
+            content: "";
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: white;
             left: 0;
-            transition: transform 0.3s ease;
         }
-        .menu-toggle div::before {
-            top: -6px;
-        }
-        .menu-toggle div::after {
-            bottom: -6px;
-        }
+        .menu-toggle span::before { top: -6px; }
+        .menu-toggle span::after { top: 6px; }
+
         nav {
             position: fixed;
             top: 0;
             right: -250px;
             width: 250px;
             height: 100%;
-            background-color: #1e1e1e;
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
-            transition: right 0.3s ease;
+            padding-top: 70px;
+            background: var(--nav-bg);
+            box-shadow: -2px 0 8px rgba(0,0,0,0.25);
+            transition: right 0.3s ease, background-color 0.25s ease;
             z-index: 999;
-            padding-top: 60px;
         }
+
+        nav.active { right: 0; }
+
         nav a {
             display: block;
             padding: 15px;
-            color: #ffffff;
+            color: var(--text);
             text-decoration: none;
-            font-size: 1em;
             text-align: center;
         }
-        nav a:hover {
-            background-color: #333333;
-        }
-        .menu-toggle.active + nav {
-            right: 0;
-        }
-        nav.active {
-            right: 0;
-        }
+
+        nav a:hover { background: var(--surface-strong); }
+
         section {
-            padding: 30px 0;
-            border-bottom: 1px solid #333333;
+            padding: 36px 0;
+            border-bottom: 1px solid var(--border);
             text-align: center;
         }
-        section:last-of-type {
-            border-bottom: none;
-        }
+        section:last-of-type { border-bottom: 0; }
+
         h2 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #1e90ff;
+            margin: 0 0 16px;
+            color: var(--accent);
+            font-size: 2rem;
         }
+
+        section > p,
+        #about > p {
+            max-width: 760px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--muted);
+        }
+
         .tasks {
             display: grid;
             grid-template-columns: 1fr;
@@ -121,47 +184,54 @@
             margin-top: 25px;
         }
 
-        @media (min-width: 768px) {
-            .tasks {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .task h3 {
+            margin: 0 0 14px;
+            color: var(--accent);
+            font-size: 1.25rem;
         }
 
         .task-unlock input {
-            width: 50%;
-            padding: 12px;
+            width: min(320px, 75%);
+            padding: 12px 14px;
             margin-bottom: 12px;
-            border-radius: 4px;
-            border: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: #17351F;
             font-size: 1em;
+            outline: none;
+        }
+
+        .task-unlock input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent);
         }
 
         .task-unlock button {
             padding: 10px 18px;
             border: none;
-            border-radius: 4px;
-            background-color: #1e90ff;
-            color: white;
+            border-radius: 6px;
+            background: var(--button-bg);
+            color: #fff;
             font-size: 1em;
             cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
         }
 
         .task-unlock button:hover {
-            background-color: #1876cc;
+            background: var(--button-hover);
+            transform: translateY(-1px);
         }
 
         .task-message {
             margin-top: 10px;
-            color: #cccccc;
+            color: var(--muted);
         }
 
-        .task-content {
-            margin-top: 15px;
-        }
+        .task-content { margin-top: 15px; }
+        .task-content p { color: var(--text); }
+        .hidden { display: none; }
 
-        .hidden {
-            display: none;
-        }
         .contact-info {
             display: flex;
             justify-content: center;
@@ -169,40 +239,37 @@
             margin-top: 20px;
         }
         .contact-item {
-            margin: 0 15px; /* Nastaví mezeru mezi položkami */
+            margin: 0 15px;
             display: flex;
             align-items: center;
         }
         .contact-info i {
             margin-right: 10px;
             font-size: 1.5em;
-            color: #1e90ff;
+            color: var(--accent);
         }
         .contact-info a {
-            color: #1e90ff;
+            color: var(--accent);
             text-decoration: none;
         }
-
-        .contact-info a:hover {
-            text-decoration: underline;
-        }
+        .contact-info a:hover { text-decoration: underline; }
 
         .download-button {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            padding: 5px 10px;
-            color: #cccccc;
-            border: 1px solid #555555;
-            border-radius: 4px;
+            padding: 6px 11px;
+            color: var(--accent);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface);
             text-decoration: none;
             font-size: 0.9em;
-            transition: color 0.2s, border-color 0.2s;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
         }
-
         .download-button:hover {
-            color: #ffffff;
-            border-color: #888888;
+            border-color: var(--accent);
+            background: var(--surface-strong);
         }
 
         .task-image {
@@ -210,86 +277,25 @@
             width: 100%;
             height: auto;
             margin: 20px auto;
-            border-radius: 4px;
+            border-radius: 8px;
         }
-
-        .image-big {
-            max-width: 500px;
-        }
-
-        .image-small {
-            max-width: 350px;
-        }
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            background-color: #1e1e1e;
-        }
-        footer p {
-            margin: 0;
-            color: #cccccc;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html, body {
-            overflow-x: hidden;
-        }
-
-        /* Better menu button position on small screens */
-        @media (max-width: 767px) {
-            .menu-toggle {
-                top: 16px;
-                right: 16px;
-            }
-
-            nav {
-                width: 220px;
-                right: -220px;
-            }
-
-            /* Contacts in one column on mobile */
-            .contact-info {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-top: 20px;
-                flex-wrap: wrap;
-                gap: 20px;
-            }
-
-            .contact-item {
-                display: flex;
-                align-items: center;
-                margin: 0;
-            }
-
-            .contact-item a {
-                overflow-wrap: anywhere;
-                word-break: break-word;
-                text-align: center;
-            }
-        }
+        .image-big { max-width: 500px; }
+        .image-small { max-width: 350px; }
 
         .countdown-box {
             margin: 25px auto;
-            padding: 20px;
+            padding: 22px;
             max-width: 700px;
-            background-color: #1e1e1e;
-            border: 1px solid #333333;
-            border-radius: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
         }
-
-        .countdown-box p {
-            margin: 0;
-        }
+        .countdown-box p { margin: 0; }
 
         #countdown {
             font-size: 1.6em;
-            font-weight: bold;
-            color: #1e90ff;
+            font-weight: 700;
+            color: var(--accent);
             letter-spacing: 1px;
         }
 
@@ -297,32 +303,73 @@
             display: inline-block;
             margin: 0 4px;
             padding: 3px 8px;
-            background-color: #1e1e1e;
-            border: 1px solid #333333;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 5px;
-            font-weight: bold;
-            color: #1e90ff;
+            font-weight: 700;
+            color: var(--accent);
             white-space: nowrap;
         }
 
+        footer {
+            padding: 30px 0;
+            background: var(--footer-bg);
+            text-align: center;
+            transition: background-color 0.25s ease;
+        }
+        footer p { margin: 0; color: var(--muted); }
+
         @media (min-width: 768px) {
-            #countdown {
-                font-size: 2em;
+            .tasks { grid-template-columns: repeat(2, 1fr); }
+            #countdown { font-size: 2em; }
+        }
+
+        @media (max-width: 767px) {
+            .container {
+                width: 92%;
+                padding-left: 12px;
+                padding-right: 12px;
             }
+            .menu-toggle,
+            .theme-toggle { top: 16px; }
+            .menu-toggle { right: 16px; }
+            .theme-toggle { right: 66px; }
+            nav { width: 220px; right: -220px; }
+            header { padding-top: 88px; }
+            .route-logo {
+                width: 116px;
+                height: 116px;
+                margin-bottom: 14px;
+            }
+            .contact-info {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            .contact-item { margin: 0; }
+            .contact-item a {
+                overflow-wrap: anywhere;
+                word-break: break-word;
+                text-align: center;
+            }
+            .task-unlock input { width: min(360px, 90%); }
         }
     </style>
 </head>
 <body>
-    <div class="menu-toggle">
-        <div></div>
-    </div>
+    <button class="theme-toggle" type="button" aria-label="Přepnout barevný režim" title="Přepnout barevný režim">☾</button>
+
+    <button class="menu-toggle" type="button" aria-label="Otevřít menu" title="Otevřít menu">
+        <span></span>
+    </button>
     <nav>
         <a href="#about">Základní informace</a>
         <a href="#tasks">Úkoly</a>
         <a href="#contact">Kontakt</a>
     </nav>
     <header>
-        <h1>Stopovaná</h1>
+        <img class="route-logo" src="../images/jezevec8.png" alt="Logo Stopované s jezevcem">
+        <h1>Kulatá stopovaná</h1>
+        <p class="route-kicker">Narozeninová výprava</p>
     </header>
 
     <div class="container">
@@ -517,25 +564,36 @@
         const menuToggle = document.querySelector('.menu-toggle');
         const nav = document.querySelector('nav');
         const navLinks = document.querySelectorAll('nav a');
+        const themeToggle = document.querySelector('.theme-toggle');
 
         menuToggle.addEventListener('click', () => {
-            menuToggle.classList.toggle('active');
             nav.classList.toggle('active');
-        });
-
-        menuToggle.addEventListener('mouseover', () => {
-            nav.classList.add('active');
-        });
-
-        nav.addEventListener('mouseleave', () => {
-            nav.classList.remove('active');
         });
 
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                menuToggle.classList.remove('active');
                 nav.classList.remove('active');
             });
+        });
+
+
+        function setTheme(theme) {
+            document.body.dataset.theme = theme;
+            localStorage.setItem('theme', theme);
+            themeToggle.textContent = theme === 'dark' ? '☀' : '☾';
+
+            const label = theme === 'dark'
+                ? 'Přepnout na světlý režim'
+                : 'Přepnout na tmavý režim';
+            themeToggle.setAttribute('aria-label', label);
+            themeToggle.title = label;
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        setTheme(savedTheme || 'dark');
+
+        themeToggle.addEventListener('click', () => {
+            setTheme(document.body.dataset.theme === 'dark' ? 'light' : 'dark');
         });
 
         // Countdown
