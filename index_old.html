@@ -3,191 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kulatá stopovaná</title>
-    <link rel="icon" type="image/png" href="../images/jezevec8.png">
+    <title>Stopovaná</title>
+    <link rel="icon" type="image/png" href="images/jezevec8.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-
-        :root {
-            --bg: #FFFDEB;
-            --surface: #FFFFF5;
-            --surface-strong: #EAF2D8;
-            --text: #17351F;
-            --muted: #65745F;
-            --accent: #4C763B;
-            --border: #D6E1C3;
-            --nav-bg: #FFFFF5;
-            --button-bg: #4C763B;
-            --button-hover: #3E6530;
-            --footer-bg: #B0CE88;
-            --input-bg: #FFFFFF;
-        }
-
-        body[data-theme="dark"] {
-            --bg: #2C3930;
-            --surface: #3F4F44;
-            --surface-strong: #4A5A4F;
-            --text: #F3EFE7;
-            --muted: #DCD7C9;
-            --accent: #D6A278;
-            --border: #607067;
-            --nav-bg: #35443A;
-            --button-bg: #A27B5C;
-            --button-hover: #B38A68;
-            --footer-bg: #3F4F44;
-            --input-bg: #F7F3EA;
-        }
-
-        * { box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; }
-        html, body { overflow-x: hidden; }
-
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
             line-height: 1.6;
-            transition: background-color 0.25s ease, color 0.25s ease;
         }
-
         .container {
             width: 90%;
             max-width: 1200px;
-            margin: 0 auto;
+            margin: auto;
             padding: 20px;
         }
-
         header {
             text-align: center;
-            padding: 85px 0 22px;
+            padding: 75px 0 20px;
         }
-
-
         header h1 {
             margin: 0;
-            color: var(--accent);
-            font-size: clamp(2.6rem, 6vw, 4.5rem);
-            line-height: 1.05;
-            letter-spacing: -0.04em;
+            font-size: 4em;
         }
-
-        .home-logo {
-            position: fixed;
-            top: 14px;
-            left: 20px;
-            width: 76px;
-            height: 76px;
-            z-index: 1000;
-            border-radius: 50%;
-            transition: transform 0.2s ease;
+        header p {
+            font-size: 1em;
+            color: #cccccc;
         }
-
-        .home-logo:hover { transform: scale(1.05); }
-
-        .home-logo img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .route-subtitle {
-            margin: 10px 0 0;
-            color: var(--muted);
-            font-size: 1.05rem;
-            font-weight: 700;
-        }
-
-        .menu-toggle,
-        .theme-toggle {
+        .menu-toggle {
             position: fixed;
             top: 20px;
+            right: 20px;
             width: 40px;
             height: 40px;
-            border: 0;
-            background: var(--button-bg);
-            color: #fff;
-            border-radius: 6px;
+            background-color: #4b4b4b;
+            border-radius: 4px;
             cursor: pointer;
             z-index: 1000;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.3s;
         }
-
-        .menu-toggle:hover,
-        .theme-toggle:hover { background: var(--button-hover); }
-
-        .menu-toggle { right: 20px; }
-        .theme-toggle { right: 70px; font-size: 1.1rem; }
-
-        .menu-toggle span,
-        .menu-toggle span::before,
-        .menu-toggle span::after {
+        .menu-toggle:hover {
+            background-color: #5c5c5c;
+        }
+        .menu-toggle div {
             width: 20px;
             height: 2px;
-            background: #fff;
+            background-color: white;
+            position: relative;
         }
-
-        .menu-toggle span { position: relative; }
-        .menu-toggle span::before,
-        .menu-toggle span::after {
-            content: "";
+        .menu-toggle div::before,
+        .menu-toggle div::after {
+            content: '';
             position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: white;
             left: 0;
+            transition: transform 0.3s ease;
         }
-        .menu-toggle span::before { top: -6px; }
-        .menu-toggle span::after { top: 6px; }
-
+        .menu-toggle div::before {
+            top: -6px;
+        }
+        .menu-toggle div::after {
+            bottom: -6px;
+        }
         nav {
             position: fixed;
             top: 0;
             right: -250px;
             width: 250px;
             height: 100%;
-            padding-top: 70px;
-            background: var(--nav-bg);
-            box-shadow: -2px 0 8px rgba(0,0,0,0.25);
-            transition: right 0.3s ease, background-color 0.25s ease;
+            background-color: #1e1e1e;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: right 0.3s ease;
             z-index: 999;
+            padding-top: 60px;
         }
-
-        nav.active { right: 0; }
-
         nav a {
             display: block;
             padding: 15px;
-            color: var(--text);
+            color: #ffffff;
             text-decoration: none;
+            font-size: 1em;
             text-align: center;
         }
-
-        nav a:hover { background: var(--surface-strong); }
-
+        nav a:hover {
+            background-color: #333333;
+        }
+        .menu-toggle.active + nav {
+            right: 0;
+        }
+        nav.active {
+            right: 0;
+        }
         section {
-            padding: 36px 0;
-            border-bottom: 1px solid var(--border);
+            padding: 30px 0;
+            border-bottom: 1px solid #333333;
             text-align: center;
         }
-        section:last-of-type { border-bottom: 0; }
-
+        section:last-of-type {
+            border-bottom: none;
+        }
         h2 {
-            margin: 0 0 16px;
-            color: var(--accent);
-            font-size: 2rem;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #1e90ff;
         }
-
-        section > p,
-        #about > p {
-            max-width: 760px;
-            margin-left: auto;
-            margin-right: auto;
-            color: var(--muted);
-        }
-
         .tasks {
             display: grid;
             grid-template-columns: 1fr;
@@ -195,54 +121,47 @@
             margin-top: 25px;
         }
 
-        .task h3 {
-            margin: 0 0 14px;
-            color: var(--accent);
-            font-size: 1.25rem;
+        @media (min-width: 768px) {
+            .tasks {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .task-unlock input {
-            width: min(320px, 75%);
-            padding: 12px 14px;
+            width: 50%;
+            padding: 12px;
             margin-bottom: 12px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            background: var(--input-bg);
-            color: #17351F;
+            border-radius: 4px;
+            border: none;
             font-size: 1em;
-            outline: none;
-        }
-
-        .task-unlock input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent);
         }
 
         .task-unlock button {
             padding: 10px 18px;
             border: none;
-            border-radius: 6px;
-            background: var(--button-bg);
-            color: #fff;
+            border-radius: 4px;
+            background-color: #1e90ff;
+            color: white;
             font-size: 1em;
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.2s ease;
         }
 
         .task-unlock button:hover {
-            background: var(--button-hover);
-            transform: translateY(-1px);
+            background-color: #1876cc;
         }
 
         .task-message {
             margin-top: 10px;
-            color: var(--muted);
+            color: #cccccc;
         }
 
-        .task-content { margin-top: 15px; }
-        .task-content p { color: var(--text); }
-        .hidden { display: none; }
+        .task-content {
+            margin-top: 15px;
+        }
 
+        .hidden {
+            display: none;
+        }
         .contact-info {
             display: flex;
             justify-content: center;
@@ -250,37 +169,40 @@
             margin-top: 20px;
         }
         .contact-item {
-            margin: 0 15px;
+            margin: 0 15px; /* Nastaví mezeru mezi položkami */
             display: flex;
             align-items: center;
         }
         .contact-info i {
             margin-right: 10px;
             font-size: 1.5em;
-            color: var(--accent);
+            color: #1e90ff;
         }
         .contact-info a {
-            color: var(--accent);
+            color: #1e90ff;
             text-decoration: none;
         }
-        .contact-info a:hover { text-decoration: underline; }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
 
         .download-button {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            padding: 6px 11px;
-            color: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            background: var(--surface);
+            padding: 5px 10px;
+            color: #cccccc;
+            border: 1px solid #555555;
+            border-radius: 4px;
             text-decoration: none;
             font-size: 0.9em;
-            transition: border-color 0.2s ease, background-color 0.2s ease;
+            transition: color 0.2s, border-color 0.2s;
         }
+
         .download-button:hover {
-            border-color: var(--accent);
-            background: var(--surface-strong);
+            color: #ffffff;
+            border-color: #888888;
         }
 
         .task-image {
@@ -288,25 +210,86 @@
             width: 100%;
             height: auto;
             margin: 20px auto;
-            border-radius: 8px;
+            border-radius: 4px;
         }
-        .image-big { max-width: 500px; }
-        .image-small { max-width: 350px; }
+
+        .image-big {
+            max-width: 500px;
+        }
+
+        .image-small {
+            max-width: 350px;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            background-color: #1e1e1e;
+        }
+        footer p {
+            margin: 0;
+            color: #cccccc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+
+        /* Better menu button position on small screens */
+        @media (max-width: 767px) {
+            .menu-toggle {
+                top: 16px;
+                right: 16px;
+            }
+
+            nav {
+                width: 220px;
+                right: -220px;
+            }
+
+            /* Contacts in one column on mobile */
+            .contact-info {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .contact-item {
+                display: flex;
+                align-items: center;
+                margin: 0;
+            }
+
+            .contact-item a {
+                overflow-wrap: anywhere;
+                word-break: break-word;
+                text-align: center;
+            }
+        }
 
         .countdown-box {
             margin: 25px auto;
-            padding: 22px;
+            padding: 20px;
             max-width: 700px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            background-color: #1e1e1e;
+            border: 1px solid #333333;
+            border-radius: 8px;
         }
-        .countdown-box p { margin: 0; }
+
+        .countdown-box p {
+            margin: 0;
+        }
 
         #countdown {
             font-size: 1.6em;
-            font-weight: 700;
-            color: var(--accent);
+            font-weight: bold;
+            color: #1e90ff;
             letter-spacing: 1px;
         }
 
@@ -314,108 +297,50 @@
             display: inline-block;
             margin: 0 4px;
             padding: 3px 8px;
-            background: var(--surface);
-            border: 1px solid var(--border);
+            background-color: #1e1e1e;
+            border: 1px solid #333333;
             border-radius: 5px;
-            font-weight: 700;
-            color: var(--accent);
+            font-weight: bold;
+            color: #1e90ff;
             white-space: nowrap;
         }
 
-        footer {
-            padding: 30px 0;
-            background: var(--footer-bg);
-            text-align: center;
-            transition: background-color 0.25s ease;
-        }
-        footer p { margin: 0; color: var(--muted); }
-
         @media (min-width: 768px) {
-            .tasks { grid-template-columns: repeat(2, 1fr); }
-            #countdown { font-size: 2em; }
-        }
-
-        @media (max-width: 767px) {
-            .container {
-                width: 92%;
-                padding-left: 12px;
-                padding-right: 12px;
+            #countdown {
+                font-size: 2em;
             }
-            .menu-toggle,
-            .theme-toggle { top: 16px; }
-            .home-logo {
-                top: 12px;
-                left: 12px;
-                width: 52px;
-                height: 52px;
-            }
-            .menu-toggle { right: 16px; }
-            .theme-toggle { right: 66px; }
-            nav { width: 220px; right: -220px; }
-            header { padding-top: 88px; }
-            .contact-info {
-                flex-wrap: wrap;
-                gap: 20px;
-            }
-            .contact-item { margin: 0; }
-            .contact-item a {
-                overflow-wrap: anywhere;
-                word-break: break-word;
-                text-align: center;
-            }
-            .task-unlock input { width: min(360px, 90%); }
         }
     </style>
 </head>
 <body>
-    <a class="home-logo" href="../index.html" aria-label="Zpět na domovskou stránku" title="Domovská stránka">
-        <img src="../images/jezevec8.png" alt="">
-    </a>
-    <button class="theme-toggle" type="button" aria-label="Přepnout barevný režim" title="Přepnout barevný režim">☾</button>
-
-    <button class="menu-toggle" type="button" aria-label="Otevřít menu" title="Otevřít menu">
-        <span></span>
-    </button>
+    <div class="menu-toggle">
+        <div></div>
+    </div>
     <nav>
         <a href="#about">Základní informace</a>
         <a href="#tasks">Úkoly</a>
         <a href="#contact">Kontakt</a>
     </nav>
     <header>
-        <h1>Kulatá stopovaná</h1>
-        <p class="route-subtitle">Do Bosny tentokrát ne (tak bacha)</p>
+        <h1>Stopovaná</h1>
     </header>
 
     <div class="container">
         <section id="about">
             <h2>Základní informace</h2>
-            <p> 
-                Ahoj! Tak už se nám to rychle blíží, a tady jsou konečně i slíbené instrukce a informace.  
-            </p> 
-                
-            <p> 
-                <b> Instrukce: </b> Zapakujte se na 4 dny. Bude potřebovat, jak pěkné oblečení do města, tak sportovní oblečení do 
-                (drsnější) přírody (alespoň 1 kus si nechte nezabalený na čtvrtek). Obojí i v nějaké teplejší variantě, pro případ 
-                chladnějších večerů. Dále pořádný dešník, plavky, no a fajn knížka by se taky mohla hodit. Rozhodně budete potřebovat i
-                minimálně jeden balíček na piknik (pátek), menší sváču na čtvrtek a nějaké sportovní snacky. Od věci by taky nebylo 
-                připravit nabitou powerbanku, všechno budete řešit přes mobil, tak ať vás to někde neodřízne. 
-            </p> 
-                
-            <p>
-                <b> Informace: </b> (Po mírném nátlaku od mamky jsme se rozhodli vypustit i některé utajované informace.)
-                A tak prozrazujeme i zaručujeme, že první noc budete ještě spát ve své posteli. Dále počítejte s tím, že před odjezem
-                vyfasujete i několik balíčků od nás (pro otevření ve správnou chvíli), tak ať na ně máte dostatek místa. Jo a počítejte také 
-                s tím, že spoustu času strávíte venku.
+            <p> Ahoj! Vítejte na stránkách Vašeho narozeninového dárku. A začneme tím, že ti mami 
+                popřejeme super narozeniny, hodně štěstí, zdraví, vína a vaflí (ať z toho i Láďa něco má).
+                A teď už k věci. Začátek všeho bude za: 
             </p>
-
-            <p> 
-                To je vše. Jak nám výhružně připomíná countdown níže, začátek je ve středu 2. září 2026 ve 14:00. Užijte si to a nebojte se ničeho:)).
-            </p> 
 
             <div class="countdown-box">
                 <p id="countdown">Načítám odpočítávání...</p>
             </div>
 
+            <p> a vy byste si na navazujících 5 dnů neměli nic plánovat. Změna termínu je možná jen do konce července 
+                a stojí jedny trdelníky/točence z Krajinky. Připravte si sportovní věci, plavky a nebo třeba 
+                i oblečení na večerní procházku městem. To kam se nakonec vydáte bude překvapení pro nás všechny :D.
+            </p>
         </section>
         <section id="tasks">
             <h2>Úkoly</h2>
@@ -441,7 +366,7 @@
                             Albrechta z Valdštejna, tehdy jednoho z nejmocnějších a nejbohatších mužů v celé habsburské monarchii 
                             (zřejmě i nejbohatšího Čecha všech dob), který si Jičín zvolil za hlavní město svého Frýdlantského vévodství. 
                             Naše město se tak tenkrát, třebaže jen na jednu dekádu, stalo jedním z nejdůležitějších míst střední Evropy. 
-                            Do města přicházelo mnoho řemeslníků, bankéřů, architektů i delegace zahraničních velvyslanců a spolu s 
+                            Do města tehdy přicházelo mnoho řemeslníků, bankéřů, architektů i delegace zahraničních velvyslanců a spolu s 
                             tím započala i velká přestavba. Začala výstavba mnoha nových staveb, a i když řada z nich nikdy nebyla dokončena 
                             podle původních plánů, stojí tu dodnes. Například kostel sv. Jakuba (původně zamýšlený jako katedrála), 
                             Valdštejnská lodžie, lipová alej, atd... Aby však pro nové stavby vzniklo místo, bylo třeba ty staré zbořit. 
@@ -475,13 +400,13 @@
                     <div class="task-content hidden">
                         <p>
                             Bravo, a ano, teď vás čeká přesně 156 schodů až na ochoz Valdické brány. A dolů vůbec nespěchejte. 
-                            Nejprve budete muset vyřešit dva úkoly.
+                            Nejprve vás totiž čeká několik úkolů.
                         </p>
                         <h4>1.</h4>
                         <p>
                             Bezpečnost na prvním místě. Takže nezapomeňte, že skákání z vyhlídkové věže se nedoporučuje! A hned po zakoupení vstupenky 
-                            si zjistěte, kdo se ujímá případného skokana (v případě, že stále žije). To vám odemkne bonusový úkol 2.5, ve kterém budete 
-                            moct získat žolíka, pro případ, že by se vám nepodařilo získat heslo pro odemknutí úkolu XXXX.
+                            si zjistěte, kdo se ujímá případného skokana, pokud teda ještě žije. To vám odemkne bonusový úkol 2.5, ve kterém budete moct získat 
+                            žolíka, pro případ, že by se vám nepodařilo získat heslo pro odemknutí úkolu XXXX.
                         </p>
                         <p>
                             <img src="images/skokan_brana.jpeg" alt="Skokan na bráně" class="task-image image-big">
@@ -540,24 +465,22 @@
                     <div class="task-content hidden">
                         <p>
                             Ano, opravdu šlo o Kartuziánský klášter, rovněž založený Albrechtem z Valdštejna. Už v polovině 19. století byl ale přestavěn 
-                            na věznici a dnes se na jeho území nachází jedna z největších a nejtřeženějších věznic v ČR sloužící k 
-                            odpykávání těch nejtěžších trestů. 
+                            na věznici a dnes se na jeho území nachází jedna z největších a 
+                            nejtřeženějších věznic v ČR sloužící k odpykávání těch nejtěžších trestů. 
                         </p>
-
                         <p>
-                            Pojďme ale dál a do věznice to nebude, nebojte:). Při pohledu z Valdické brány jste si určitě všimli nejen věznice, ale taky 
+                            Pojďme ale dál a do věznice to nebude, nebojte:). Při pohledu z Valdické brány jste si určitě všimli nejen věznice, ale rovněž 
                             Lipové aleje, která jakoby po přímce vedla přímo k bývalému klášteru. A právě tou se vydáte, na jejím konci přejdete přes silnici 
                             vedoucí do Lomnice nad Popelkou a vstoupíte do Libosadu. Projdete kolem lodžie až k domku místního poustevníka 
-                            v severním rohu areálu. Říká se, že tu poustevník posedává už od konce 18. století, konkrétně prý od doby, kdy se hostinský z nedaleké
-                            hospody rozhodl pro tento znamenitý marketingový tah. O tom, zda mu poustevník opravdu přivedl více hostů, už historie mlčí (alespoň ta 
-                            nám známá). Vaším dnešním předposledním úkolem je zjistit, kdo že to tam nyní žije s poustevníkem? Při naší poslední návštěvě
-                            to sedělo hned za vstupní mříží.
+                            v severním rohu areálu. Říká se, že poustevník tu posedává už od konce 18. století a prý je tu od doby, kdy hostinský z nedaleké
+                            hospody vymýšlel, jak k sobě do krčmy nalákat více hostů:)). Kdo žije s poustevníkem ve věžičce jeho domku? To vám odemkne poslední
+                            dnešní úkol.
                         </p>
 
                     </div>
                 </div>
 
-                <div class="task" data-password="sova">
+                <div class="task" data-password="stopovana">
                     <h3>Úkol 4</h3>
 
                     <div class="task-unlock">
@@ -594,36 +517,25 @@
         const menuToggle = document.querySelector('.menu-toggle');
         const nav = document.querySelector('nav');
         const navLinks = document.querySelectorAll('nav a');
-        const themeToggle = document.querySelector('.theme-toggle');
 
         menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
             nav.classList.toggle('active');
+        });
+
+        menuToggle.addEventListener('mouseover', () => {
+            nav.classList.add('active');
+        });
+
+        nav.addEventListener('mouseleave', () => {
+            nav.classList.remove('active');
         });
 
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
                 nav.classList.remove('active');
             });
-        });
-
-
-        function setTheme(theme) {
-            document.body.dataset.theme = theme;
-            localStorage.setItem('theme', theme);
-            themeToggle.textContent = theme === 'dark' ? '☀' : '☾';
-
-            const label = theme === 'dark'
-                ? 'Přepnout na světlý režim'
-                : 'Přepnout na tmavý režim';
-            themeToggle.setAttribute('aria-label', label);
-            themeToggle.title = label;
-        }
-
-        const savedTheme = localStorage.getItem('theme');
-        setTheme(savedTheme || 'dark');
-
-        themeToggle.addEventListener('click', () => {
-            setTheme(document.body.dataset.theme === 'dark' ? 'light' : 'dark');
         });
 
         // Countdown
@@ -653,8 +565,8 @@
         }
 
         function updateAllCountdowns() {
-            updateCountdown("countdown", "2026-09-02T14:00:00+02:00");
-            updateCountdown("smallCountdown", "2026-09-02T16:00:00+02:00", "Smůla, snad to vyjde příště!");
+            updateCountdown("countdown", "2026-09-03T14:00:00+02:00");
+            updateCountdown("smallCountdown", "2026-09-03T16:00:00+02:00", "Smůla, snad to vyjde příště!");
         }
 
         updateAllCountdowns();
