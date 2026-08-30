@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Husitský kvíz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Libre+Baskerville:wght@400;700&display=swap');
+:root{--wine:#7d1f2b;--gold:#c89b3c;--cream:#f7efd9;--ink:#30251f;--green:#39734a;--red:#a83d3d}
+*{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:"Libre Baskerville",Georgia,serif;color:var(--ink);background:radial-gradient(circle at top,#fff9e9 0,#f4e5c3 55%,#e7d0a1 100%);display:flex;justify-content:center;align-items:center;padding:20px}
+.card{width:min(760px,100%);background:rgba(255,250,235,.96);border:3px solid var(--gold);box-shadow:0 18px 50px #4d321f33;border-radius:18px;padding:34px 30px;position:relative}
+.card:before,.card:after{content:"✦";position:absolute;color:var(--gold);font-size:25px}.card:before{left:16px;top:12px}.card:after{right:16px;top:12px}
+h1,h2{font-family:Cinzel,Georgia,serif;text-align:center;color:var(--wine);margin:8px 0 14px}
+h1{font-size:clamp(30px,7vw,52px)} h2{font-size:clamp(22px,5vw,32px)}
+.subtitle{text-align:center;line-height:1.6;margin-bottom:28px}
+.start{display:block;margin:0 auto;background:var(--wine);color:white;border:0;border-radius:10px;padding:15px 30px;font-size:17px;font-weight:bold;cursor:pointer;box-shadow:0 5px 0 #57151d}
+.start:hover{transform:translateY(-1px)}
+.top{display:flex;justify-content:space-between;gap:15px;font-size:14px;color:#67564a;margin-bottom:15px}
+.progress{height:9px;background:#ead9b8;border-radius:10px;overflow:hidden;margin-bottom:28px}.bar{height:100%;background:var(--wine);width:0;transition:.3s}
+.question{font-size:21px;line-height:1.55;text-align:center;margin:0 auto 24px;max-width:650px;font-weight:bold}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answer{background:#fffaf0;border:2px solid #d8bd84;border-radius:11px;padding:15px;text-align:left;font:inherit;cursor:pointer;transition:.18s;color:var(--ink)}
+.answer:hover:not(:disabled){border-color:var(--wine);background:#f9edd5}.answer.correct{background:#e6f3e8;border-color:var(--green)}.answer.wrong{background:#f8e3e0;border-color:var(--red)}
+.answer:disabled{cursor:default}
+.hint{margin:20px auto 0;display:block;border:1px solid var(--gold);background:#f5e7c8;color:#60491e;border-radius:9px;padding:10px 16px;cursor:pointer}
+.hintbox{display:none;margin-top:12px;padding:12px 15px;background:#fff5d9;border-left:4px solid var(--gold);line-height:1.5}
+.feedback{display:none;margin-top:18px;padding:17px;border-radius:11px;line-height:1.55}.feedback.good{background:#e7f3e9;border:1px solid #9fc5a8}.feedback.bad{background:#f8e6e3;border:1px solid #d4a29b}
+.next{display:none;margin:18px auto 0;background:var(--wine);color:#fff;border:0;border-radius:9px;padding:12px 23px;font-weight:bold;cursor:pointer}
+.result{text-align:center}.score{font-family:Cinzel;font-size:55px;color:var(--wine);margin:20px 0}
+.restart{background:var(--wine);color:#fff;border:0;border-radius:10px;padding:14px 26px;font-weight:bold;cursor:pointer}
+.small{font-size:13px;color:#725f51;text-align:center;margin-top:25px}
+@media(max-width:600px){.card{padding:28px 18px}.answers{grid-template-columns:1fr}.question{font-size:18px}.top{font-size:12px}}
+</style>
+</head>
+<body>
+<main class="card">
+<section id="home">
+<h1>Husitský kvíz</h1>
+<p class="subtitle">Ověř si své znalosti o husitství, jeho významných osobnostech, bitvách a české reformaci.</p>
+<p class="subtitle">⚔️ 17 otázek &nbsp; • &nbsp; 💡 nápovědy &nbsp; • &nbsp; 📜 historické zajímavosti</p>
+<button class="start" onclick="startQuiz()">Začít kvíz</button>
+</section>
+
+<section id="quiz" style="display:none">
+<div class="top"><span id="counter"></span><span id="score">Skóre: 0</span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<h2 id="title">Otázka</h2>
+<p class="question" id="question"></p>
+<div class="answers" id="answers"></div>
+<button class="hint" id="hintBtn" onclick="showHint()">💡 Zobrazit nápovědu</button>
+<div class="hintbox" id="hint"></div>
+<div class="feedback" id="feedback"></div>
+<button class="next" id="next" onclick="nextQuestion()">Další otázka →</button>
+</section>
+
+<section id="result" class="result" style="display:none">
+<h1>Kvíz dokončen!</h1>
+<p>Tvůj výsledek:</p>
+<div class="score" id="finalScore"></div>
+<p id="resultText"></p>
+<button class="restart" onclick="startQuiz()">Hrát znovu</button>
+</section>
+</main>
+<script>
+const qs=[
+["Jak se nazýval program, který shrnoval hlavní požadavky husitského hnutí?",["Čtyři pražské artikuly","Kutnohorský dekret","Zlatá bula","Baselští artikuly"],0,"Zamysli se, kolik hlavních požadavků tento program obsahoval.","Čtyři pražské artikuly shrnovaly hlavní požadavky husitů, například přijímání pod obojí způsobou."],
+["Který český panovník se stal jediným českým králem, který byl zároveň příslušníkem kališnického hnutí?",["Václav IV.","Jiří z Poděbrad","Zikmund Lucemburský","Karel IV."],1,"Tento král vládl až po skončení husitských válek.","Jiří z Poděbrad byl kališnický král a vládl Čechám v letech 1458–1471."],
+["Kde se roku 1434 odehrála rozhodující bitva, která znamenala konec husitské revoluce?",["U Lipan","U Sudoměře","U Domažlic","Na Vítkově"],0,"Bitva se odehrála ve středních Čechách a její název je spojen s obcí.","U Lipan roku 1434 porazila koalice umírněných kališníků a katolíků radikální husity."],
+["Jaké náboženské společenství vzniklo jako významný výsledek české reformace?",["Jednota bratrská","Tovaryšstvo Ježíšovo","Benediktinský řád","Templářský řád"],0,"Šlo o společenství, které navazovalo na české reformační myšlenky.","Jednota bratrská vznikla v 15. století a navázala na tradici české reformace."],
+["Jaký symbol se stal pro husity typickým díky jejich požadavku na přijímání pod obojí?",["Kalich","Kříž","Koruna","Lilie"],0,"Představ si nádobu, ze které se při bohoslužbě pije víno.","Kalich symbolizoval požadavek přijímání vína i chleba při eucharistii, tedy pod obojí způsobou."],
+["Z jakého rukopisu pochází slavná husitská píseň „Ktož jsú boží bojovníci“?",["Jistebnický kancionál","Vyšehradský kodex","Codex Gigas","Dalimilova kronika"],0,"Název rukopisu je odvozen od místa v jižních Čechách a jde o sbírku duchovních písní.","Jistebnický kancionál je významný pramen husitské duchovní hudby a obsahuje i tuto slavnou píseň."],
+["Který český reformátor se inspiroval učením anglického reformátora Johna Wycliffa?",["Jan Hus","Jan Žižka","Prokop Holý","Jiří z Poděbrad"],0,"Tento reformátor byl upálen v Kostnici roku 1415.","Jan Hus znal Wycliffovo učení a některé jeho myšlenky využil ve své kritice církve."],
+["Jak dlouho přibližně trvaly husitské války? ",["Patnáct let","Pět let","Třicet let","Padesát let"],0,"Po upálení mistra Jana Husa trvalo ještě 4 roky, než skutečně došlo k válce. A naopak, po konci válek uběhlo ještě šest let, než byl vynalezen knihtisk (v roce 1440)","Husické války datujeme od roku 1419 do roku 1434, tedy 15 let."],
+["Jak husité označovali své výpravy do nepřátelských zemí, při nichž šířili své myšlenky a získávali zásoby či kořist?",["Spanilé jízdy","Křížové výpravy","Královské cesty","Poutní výpravy"],0,"Název zní poměrně pozitivně, přesto šlo o vojenské výpravy.","Spanilé jízdy byly husitské vojenské výpravy mimo české země, zejména do okolních oblastí."],
+["Která husitská zbraň vznikla úpravou zemědělské kosy?",["Sudlice","Píšťala","Řemdih","Kuše"],0,"Hledej mezi tyčovými zbraněmi, jejichž tvar mohl vycházet ze zemědělského nástroje.","Sudlice patřila mezi tyčové zbraně používané husity a souvisela s úpravami běžných zemědělských nástrojů."],
+["Kam husité mířili, když je 25. března 1420 u Sudoměře dostihlo nepřátelské vojsko?", ["Do nově vznikajícího Tábora","Na pomoc obležené Praze","Vyplenit Kutnou Horu a získat zásoby stříbra","Do Kostnice pomstít Jana Husa"], 0, "Jejich cílem bylo místo, které se právě v této době stávalo jedním z hlavních center radikálního husitství.", "Husitská skupina odcházela z Plzně a směřovala k nově vznikajícímu Táboru. Právě během tohoto přesunu ji u Sudoměře dostihly oddíly katolické šlechty a strakonických johanitů."],
+["Jak se říkalo dětem, které husité využívali k obsluze praků?",["Práčata","Písaři","Panoši","Poslové"],0,"Slovo souvisí přímo s názvem zbraně, kterou obsluhovali.","Práčata byla označována jako děti využívané k obsluze praků v husitském vojsku."],
+["Jaký obranný systém vytvořili husité pomocí svých bojových vozů?",["Vozové hradby","Kamenné valy","Dřevěné palisády","Řetězové mosty"],0,"Název spojuje prostředek, ze kterého byl vytvořen, a opevnění.","Husité spojovali bojové vozy do obranného postavení známého jako vozová hradba."],
+["Kterou bitvu podle tradice husité vyhráli mimo jiné díky zpěvu, který měl zastrašit nepřátelské vojáky?",["U Domažlic","U Lipan","Na Vítkově","U Sudoměře"],0,"Šlo o střet s křižáckým vojskem, které se dalo na ústup ještě před velkou bitvou.","U Domažlic roku 1431 se křižácké vojsko rozprchlo ještě před rozhodujícím střetem; tradičně se zmiňuje i účinek husitského zpěvu."],
+["Které významné město pomohlo husitům ovládnout vítězství Jana Žižky v bitvě na Vítkově roku 1420?",["Prahu","Brno","Olomouc","Kutnou Horu"],0,"Bitva proběhla přímo na okraji tehdejšího hlavního města českého království.","Vítězství na Vítkově pomohlo udržet Prahu v rukou husitů a zmařilo útok křižáckého vojska."],
+["Který hrad obléhal Jan Žižka, když podle tradice přišel o své druhé oko?",["Rábí","Karlštejn","Křivoklát","Trosky"],0,"Hrad se nachází v západních Čechách a jeho název začíná písmenem R.","Při obléhání hradu Rábí měl Jan Žižka podle tradice přijít o své druhé oko a následně zcela oslepnout."],
+["Podle známé legendy pomohly u Sudoměře husitům v boji také ženy. Co měly údajně udělat?", ["Rozprostřít na zem své řízy, do kterých se rytířům zachytávaly ostruhy","Převléct se do rytířské zbroje a předstírat posily","Zapálit rákosí kolem rybníka","Vypustit vodu z rybníka Markovec"], 0, "Tahle historka souvisí s těžce obrněnými rytíři, kteří museli v nepříznivém terénu bojovat pěšky.", "Enea Silvia Piccolominiho, pozdější papež Pius II ve své práci napsal: „Jakmile tedy sestoupili protivníci z koní, poručil ženám, které obyčejně následovaly jeho vojsko, aby posbíraly na zemi své řízy; jezdci zapletše se do nich ostruhami, byli pobiti dřív, než mohli nohy vymotati.” "],
+];
+let i=0,score=0,answered=false;
+function startQuiz(){i=0;score=0;document.getElementById("home").style.display="none";document.getElementById("result").style.display="none";document.getElementById("quiz").style.display="block";render();}
+function render(){answered=false;let q=qs[i];document.getElementById("counter").textContent=`Otázka ${i+1} / ${qs.length}`;document.getElementById("score").textContent=`Skóre: ${score}`;document.getElementById("bar").style.width=((i)/qs.length*100)+"%";document.getElementById("question").textContent=q[0];let a=document.getElementById("answers");a.innerHTML="";q[1].forEach((x,n)=>{let b=document.createElement("button");b.className="answer";b.textContent=String.fromCharCode(65+n)+") "+x;b.onclick=()=>choose(n);a.appendChild(b)});document.getElementById("hint").style.display="none";document.getElementById("hint").textContent=q[3];document.getElementById("hintBtn").style.display="block";document.getElementById("feedback").style.display="none";document.getElementById("next").style.display="none";document.getElementById("next").textContent=i===qs.length-1?"Zobrazit výsledek →":"Další otázka →";}
+function showHint(){document.getElementById("hint").style.display="block";document.getElementById("hintBtn").style.display="none";}
+function choose(n){if(answered)return;answered=true;let q=qs[i], buttons=document.querySelectorAll(".answer");buttons.forEach(b=>b.disabled=true);buttons[n].classList.add(n===q[2]?"correct":"wrong");if(n===q[2]){score++;document.getElementById("score").textContent=`Skóre: ${score}`;buttons[n].classList.add("correct")}else buttons[q[2]].classList.add("correct");let f=document.getElementById("feedback");f.className="feedback "+(n===q[2]?"good":"bad");f.innerHTML=(n===q[2]?"✓ Správně! ":"✗ Tentokrát ne. ") + q[4];f.style.display="block";document.getElementById("next").style.display="block";}
+function nextQuestion(){i++;if(i>=qs.length){document.getElementById("quiz").style.display="none";document.getElementById("result").style.display="block";document.getElementById("finalScore").textContent=`${score} / ${qs.length}`;let pct=score/qs.length;if(pct===1)document.getElementById("resultText").textContent="Výborně! Husitské dějiny máš opravdu v malíku.";else if(pct>=.8)document.getElementById("resultText").textContent="Skvělý výsledek! Většinu husitských dějin ovládáš velmi dobře.";else if(pct>=.6)document.getElementById("resultText").textContent="Dobrá práce! Některé detaily ještě stojí za zopakování.";else document.getElementById("resultText").textContent="Nevadí — teď už víš, co si před dalším pokusem zopakovat."; }else render();}
+</script>
+</body>
+</html>
