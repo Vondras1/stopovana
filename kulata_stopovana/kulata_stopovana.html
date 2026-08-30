@@ -335,6 +335,49 @@
             #countdown { font-size: 2em; }
         }
 
+        .image-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .image-row img {
+            width: 50%;
+            height: auto;
+        }
+
+        .song-text {
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent);
+            font-style: italic;
+        }
+
+        .song-text p {
+            margin: 0.3rem 0;
+        }
+
+        .food-options {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0 1.5rem;
+            counter-reset: food;
+        }
+
+        .food-options li {
+            counter-increment: food;
+            display: grid;
+            grid-template-columns: 2rem 1fr;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            text-align: left;
+        }
+
+        .food-options li::before {
+            content: counter(food) ".";
+            text-align: right;
+        }
+
         @media (max-width: 767px) {
             .container {
                 width: 92%;
@@ -428,7 +471,7 @@
             <div class="tasks">
 
                 <div class="task" data-password="vafle">
-                    <h3>Úkol 1</h3>
+                    <h3>Úkol 1 (TODO)</h3>
 
                     <div class="task-unlock">
                         <input type="password" placeholder="Heslo k úkolu">
@@ -552,7 +595,7 @@
                             v severním rohu areálu. Říká se, že tu poustevník posedává už od konce 18. století, konkrétně prý od doby, kdy se hostinský z nedaleké
                             hospody rozhodl pro tento znamenitý marketingový tah. O tom, zda mu poustevník opravdu přivedl více hostů, už historie mlčí (alespoň ta 
                             nám známá). Vaším dnešním předposledním úkolem je zjistit, kdo že to tam nyní žije s poustevníkem? Při naší poslední návštěvě
-                            to sedělo hned za vstupní mříží.
+                            to posedávalo hned za vstupní mříží.
                         </p>
 
                     </div>
@@ -575,6 +618,460 @@
                         </p>
                     </div>
                 </div>
+
+                <div class="task" data-password="vlak">
+                    <h3>Úkol 5 (TODO)</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+                        <p>
+                            Dobrou náladu vzít s sebou. Bez ní se na cestu nevyráží.
+
+                            Krom toho zde dostanou puzzle a úkol zkouknout S čerty nejsou žerty. Pro dnešek konec, a už jen doporučení zajít někam na skleničku.
+                        </p>
+                    </div>
+                </div>
+
+                <! -- Den 2 -->
+
+                <div class="task" data-password="praha">
+                    <h3>Úkol 6</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+                        <p>
+                        Ahoj u dalšího dne stopované:) Dneska budete vy a vaše kola těmi nejlepšími kamarády (alespoň 
+                        Violka vám tak vzkazuje). A mimochodem, docela sranda s tou Prahou, co? 
+                        </p>
+
+                        <p>
+                        Uplně nejdříve vás ovšem, milí odvážlivci, čeká jízda motoráčkem od Českých Drah 
+                        (<a href=https://youtu.be/Q5elh2SXovU>https://youtu.be/Q5elh2SXovU</a>, znáte?) a my 
+                        bychom neradi, aby se snad někoho zmocnil jakýkoliv neklid. A tak pro vás máme jednu básničku. 
+                        Poznáte o čem autor píše? Co je název této básně? Jestli jo, tak smekáme nejeden klobok a vy 
+                        hned víte, kde Vás dnes čeká poslední úkol. Pokud ne, tak to jen znamená, že nejste šíleneci 
+                        a nic si z toho nedělejte, ve správný čas se vše dozvíte:)
+                        </p>
+
+                        <p>
+                            <a href="files/sobotka_sramek_zacerneno.pdf" download class="download-button">
+                                <i class="fas fa-download"></i> Báseň
+                            </a>
+                        </p>
+
+                        <p>
+                            Hned, jak se i s koly vymotáte z vlaku, tak se rovnou na zastávce Karlovice-Sedmihorky 
+                            rozlučte s pohodlím a vydejte na jihovýchod do lesa. Další instrukce máte zde: 
+                            <a href=https://docs.google.com/document/d/1U23klmke7pBYUEmjkUryzWr58WH2Zjcq2jmmUzsY-6s/edit?usp=sharing>https://docs.google.com/document/d/1U23klmke7pBYUEmjkUryzWr58WH2Zjcq2jmmUzsY-6s/edit?usp=sharing</a>
+                        </p>
+
+                        <p>
+                            Doplňte za hvězdičky.
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="task" data-password="brána">
+                    <h3>Úkol 7</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+                        <p> 
+                            Instrukce pokračují v části 2: <a href=https://docs.google.com/document/d/1Rerd5CNBQrnI5MffTCHtF9Y6fxm1ZUhA-kSpJuEr86c/edit?usp=sharing>https://docs.google.com/document/d/1Rerd5CNBQrnI5MffTCHtF9Y6fxm1ZUhA-kSpJuEr86c/edit?usp=sharing</a>.
+                        </p>
+
+                        <p>
+                            Kolik jich vidíte?
+                        </p>
+
+
+                    </div>
+                </div>
+
+                <div class="task" data-password="3">
+                    <h3>Úkol 8</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+                        <p> 
+                            A co žabky, ty už jste také zahlédli? Mám teď pro Vás trochu mrzutou zprávu, mezi vámi a dalším 
+                            úkolem se nyní tyčí Příhrazské skály. Samozřejmě jdou překonat i napřímo a my to tak udělali, ale taky 
+                            jsme se (nejdenou) jednomyslně shodli, že jsem měl už i lepší nápady. Doporučujem tak spíš obroužení ze 
+                            severovýchodu.
+                        </p>
+
+                        <p>
+                            <img src="images/nesu_kolo.jpg" alt="Nesu kolo" class="task-image image-small">
+                        </p>
+
+                        <p>
+                            Budete se držet cyklostezky 4009 a cestou vedoucí kolem Drábských světniček přijedete až do Zásadky, tam 
+                            se na křižovatce u SDH dáte vlevo a pak, asi po 100m, vpravo. Pozvolným kopečkem budete stoupat až dokud vám
+                            cestu neprotne červená turistická stezka
+                        </p>
+
+                        <p class="image-row">
+                            <img src="images/Screenshot from 2026-08-29 22-43-17.png" alt="shot 1" class="task-image image-small">
+                            <img src="images/Screenshot from 2026-08-29 22-42-56.png" alt="shot 2" class="task-image image-small">
+                        </p>
+
+                        <p>
+                            Po červené teď dorazíme až k hradu Valečov a skalnímu městečku, kde takzvaní „skaláci” skutečně bydleli 
+                            až do roku 1882 (což je taky mimochodem rok, kdy si Američan Henry W. Seely nechal patentovat první 
+                            elektrožehličku a vlaky už zdaleka nebyly novinkou).
+
+                            Jo, je to turistická, takže se může stát, že na pár místech budete muset z kol sesednout, ale žádný strachy, 
+                            všechno jsme projeli a nic hrozného by tam na vás čekat nemělo. 
+                        </p>
+
+                        <p>
+                            A pokud tomu tak opravdu bylo, tak vítejte u skalních světniček a hradu Valečov. Nechte kola u světniček 
+                            a pořádně si to prošmejděte, rozhodně to totiž stojí za to. V jedné ze světniček se přibližně před 30-ti 
+                            lety narodil prabídný loupežník z jedné dobře známé české pohádky. Jak se jmenoval?
+                        </p>
+                    </div>
+                </div>
+
+                <div class="task" data-password="Lotrando">
+                    <h3>Úkol 9 (TODO)</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <div class="song-text">
+                            <p>Pod dubem, za dubem, tam si na tě počíháme,</p>
+                            <p>pod dubem, za dubem, tam tě voškubem!</p>
+                        </div>
+
+                        <p>
+                            Hezky pěkně! To by mohl být dobrý plán na večer, co říkáte?
+                            A rovnou si i vzpomenout, co že se to chystá k jídlu cizím
+                            (a hladovým) velvyslancům:). A co vy? Už máte hlad? To máte tři možnosti, pokud jste si teda
+                            už nenašli něco dobrého cestou:
+                        </p>
+
+                        <ol class="food-options">
+                            <li>
+                                Máte svoji sváču? Hrrr na ni!
+                            </li>
+
+                            <li>
+                                Cestou si uděláte malou odbočku k restauraci Krásná vyhlídka.
+                                My jsme ji tedy zatím nevyzkoušeli, ale když jsme projížděli kolem, tak
+                                vypadala fakt dobře.
+                            </li>
+
+                            <li>
+                                Cestou nám někde zdrhnete ze stezky a dáte si něco dobrého až později.
+                            </li>
+                        </ol>
+
+                        <p>
+                            A že je 3. možnost blbá, když nevíte kam jedete? Není problém:
+                            <a href="#">ODKAZ</a>
+                        </p>
+
+                        <p>
+                            Tak, jak že se ten mlýn jmenuje?
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="task" data-password="střehomský">
+                    <h3>Úkol 10 (TODO)</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                            Kdo sedí na mlýnském kole?
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div class="task" data-password="čert">
+                    <h3>Úkol 11</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                            Je to tak, asi nějaký Janek:). Mimochodem, co říkáte na údolí Plakánek, líbilo? Nám moc. 
+                            Ale pojďme zase dál, nebo vlastně spíš zpět k básničce z rána. Ta báseň je od Fráni Šrámka, místního rodáka, a popisuje 
+                            jeho rodné město. Jmenuje se Sobotka. Báseň zní najednou uplně jinak, co?
+                        </p>
+
+                        <p>
+                            U Šrámka ještě na chvíli zůstaneme a poslední dnešní báseň na vás čeká na Soboteckém náměstí pod Šrámkovou bustou.
+                            Fráňa byl neohrožený bojovník za ********.
+                            <img src="images/busta_sramek.jpg" alt="Šrámkova busta" class="task-image image-small">
+                        </p>
+
+                        <p>
+                            A jak jste na tom s časem? Máte ještě sílu na sidequest? Heslo k němu je "humprecht".
+                        </p>
+                    </div>
+                </div>
+
+                <div class="task" data-password="humprecht">
+                    <h3>Bonusový úkol 11.5</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                            <a href=https://docs.google.com/document/d/1lUwP4bZ0bVLamhj3mqimpdKyFmafVyP6eEo7XD7m5mc/edit?usp=sharing>https://docs.google.com/document/d/1lUwP4bZ0bVLamhj3mqimpdKyFmafVyP6eEo7XD7m5mc/edit?usp=sharing</a>
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="task" data-password="lidskost">
+                    <h3>Úkol 12</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                            Paráda, to je dnes vše. Teď už zbývá jen zjistit cíl vaší další poutě. Ten na vás čeká v básni níže. Do jakého městečka vyrazíte? 
+                        </p>
+
+                        <p>
+                            <a href="files/pisecka_sramek_zacerneno.pdf" download class="download-button">
+                                <i class="fas fa-download"></i> Báseň 2
+                            </a>
+                        </p>
+
+                        <p>
+                            Pokud vám stále zbývají nějaké síly, pak přejeme pěknou procházku po Sobotce, pokud ne, pak pěknou a rychlou cestu domu:)
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="task" data-password="pisek">
+                    <h3>Úkol 13</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                        Správně, bude to Písek, město o kterém se toho dá hodně napsat a něco z toho i napíšem. Třeba to, že právě tam 
+                        Šrámek chodil na gymnázium a prožil tam zhruba 10 let svého života. Výlet do Písku vás ale nečeká hned zítra, 
+                        zítra máte za úkol se do jedné hodiny odpoledne dostat na následující lokaci 49.2430383N, 14.0624269E (a to i s piknikovým košem a dekou). 
+                        Dobrou chuť!
+                        </p>
+
+                        <p>
+                        Ještě než se pustíte do odpočinku po dlouhé cestě, tak najděte tu nejimpozantnější sochu v okolí i s její popisnou 
+                        deskou a doplňte výrok „******* super omnia”. 
+                        </p>
+                    </div>
+                </div>
+
+                <div class="task" data-password="Veritas">
+                    <h3>Úkol 14 (TODO)</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                        Veritas (Pravda) super (nade) omnia (vše). A my vám přejem dobrou chuť!
+                        </p>
+
+                        <p>
+                        Dnes vás čeká klidnější den, ale úkoly furt nějaké budou, to se nebojte. Tím prvním je zůstat na dece, připomenout si pár 
+                        základních informací o Husitech a samozřejmě i o super důležité bitvě u Sudoměře. Pak na vás čeká následující kvíz:
+                        </p>
+                    </div>
+                </div>
+
+                <div class="task" data-password="hotelnarychte">
+                    <h3>Úkol 15 (TODO)</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                        V minulém kvizu dostali za ukol otevrit 1. dopis ve kterem dostali (1350) a úkol vyrazit se ubytovat do netolic, a pak se 
+                        po menší večeři hezky obléknout, přibalit i teplé vrstvy, protože dnes se vrátí až docela pozdě a příjemnou obuv. A pak se v 18:00, 
+                        i s balíčkem č.2, hlásit na pozici 49.05302376253791, 14.18472111860018. Od tamtad byste měli vidět i "Autoservis Pneuservis Prodej 
+                        dílů a vozidel". Jak se jmenuje?
+
+                        </p>
+                    </div>
+                </div>
+
+                <div class="task" data-password="havlik">
+                    <h3>Úkol 16</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                        Přejeme moc krásný večer! Balíček, co si sebou nesete, otevřete až na zámku. No a ahoj zítra, další heslo na vás už čeká v 
+                        kapse na sedadle spolujezdce. 
+                        </p>
+
+                        <p>
+                            <a href="files/smsticket - Rockové balady na zámku.pdf" download class="download-button">
+                                <i class="fas fa-download"></i> Rockové balady - vstupenky
+                            </a>
+                        </p>
+
+                    </div>
+                </div>
+
+
+                <div class="task" data-password="neco">
+                    <h3>Úkol 17 (TODO)</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                        </p>
+
+                        <p>
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="task" data-password="neco">
+                    <h3>Úkol 18 (TODO)</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                        </p>
+
+                        <p>
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="task" data-password="neco">
+                    <h3>Úkol 19 (TODO)</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                        </p>
+
+                        <p>
+                        </p>
+
+                    </div>
+                </div>
+    
+                <div class="task" data-password="neco">
+                    <h3>Úkol 20 (TODO)</h3>
+
+                    <div class="task-unlock">
+                        <input type="password" placeholder="Heslo k úkolu">
+                        <button>Odemknout</button>
+                        <p class="task-message"></p>
+                    </div>
+
+                    <div class="task-content hidden">
+
+                        <p>
+                        </p>
+
+                        <p>
+                        </p>
+
+                    </div>
+                </div>
+                
 
             </div>
         </section>
