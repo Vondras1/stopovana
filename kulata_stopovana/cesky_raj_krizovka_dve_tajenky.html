@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Šablona křížovky – Český ráj</title>
+<style>
+  :root {
+    --pink: #ec2d79;
+    --pink-light: #f7bed2;
+    --blue-light: #c9e4f7;
+    --blue: #0f477f;
+    --ink: #111;
+    --paper: #fff;
+    --cell: 24px;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    background: #ececec;
+    color: var(--ink);
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 14px;
+    background: #20242a;
+    color: white;
+  }
+  .toolbar button {
+    border: 0;
+    border-radius: 7px;
+    padding: 9px 13px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .toolbar .primary { background: var(--pink); color: white; }
+  .toolbar .secondary { background: #fff; color: #222; }
+
+  .editor {
+    width: min(1080px, calc(100% - 24px));
+    margin: 14px auto;
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 18px #0002;
+  }
+  .editor.hidden { display: none; }
+  .editor p { margin-top: 0; line-height: 1.4; }
+  .editor textarea {
+    width: 100%;
+    min-height: 350px;
+    resize: vertical;
+    font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+  }
+  #status {
+    margin-top: 8px;
+    font-size: 14px;
+    white-space: pre-wrap;
+  }
+
+  .sheet {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 16px auto 30px;
+    background: var(--paper);
+    position: relative;
+    padding: 14mm 14mm 13mm;
+    overflow: hidden;
+    box-shadow: 0 4px 22px #0003;
+  }
+
+  .frame-outer, .frame-inner {
+    position: absolute;
+    pointer-events: none;
+    border: 1.5px solid var(--pink);
+  }
+  .frame-outer { inset: 4.5mm; border-radius: 0; }
+  .frame-inner { inset: 7.2mm; }
+
+  .top-mark, .bottom-mark {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--pink);
+    font-weight: 800;
+    letter-spacing: 4px;
+    background: white;
+    padding: 0 6px;
+    z-index: 3;
+  }
+  .top-mark { top: 3.4mm; }
+  .bottom-mark { bottom: 3.4mm; }
+  .top-mark span, .bottom-mark span { color: var(--blue); }
+
+  .folk {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    z-index: 3;
+  }
+  .folk::before, .folk::after {
+    content: "";
+    position: absolute;
+    border-radius: 100% 0 100% 0;
+    transform-origin: bottom center;
+  }
+  .folk::before {
+    width: 9px; height: 25px;
+    background: var(--pink);
+    left: 12px; top: 2px;
+    transform: rotate(35deg);
+  }
+  .folk::after {
+    width: 8px; height: 22px;
+    background: #2d88c8;
+    left: 5px; top: 8px;
+    transform: rotate(-35deg);
+  }
+  .folk.tl { left: 8mm; top: 7mm; }
+  .folk.tr { right: 8mm; top: 7mm; transform: scaleX(-1); }
+  .folk.bl { left: 8mm; bottom: 7mm; transform: scaleY(-1); }
+  .folk.br { right: 8mm; bottom: 7mm; transform: scale(-1); }
+
+  h1 {
+    text-align: center;
+    margin: 4mm 0 4mm;
+    color: var(--blue);
+    font-size: 32pt;
+    line-height: 1;
+    font-weight: 800;
+  }
+
+  .crossword-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 112mm;
+    margin-top: 2mm;
+  }
+
+  .crossword {
+    position: relative;
+  }
+  .cell {
+    position: absolute;
+    width: var(--cell);
+    height: var(--cell);
+    border: 1.4px solid var(--blue);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cell.secret1 { background: var(--pink-light); }
+  .cell.secret2 { background: var(--blue-light); }
+  .cell .num {
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    font-size: 8px;
+    line-height: 1;
+    font-weight: 800;
+    color: #111;
+  }
+  .cell .letter {
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0;
+  }
+  body.show-answers .cell .letter { opacity: 1; }
+
+  .clues {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 11mm;
+    margin: 2mm 5mm 0;
+  }
+  .clue-col h2 {
+    margin: 0 0 2mm;
+    color: var(--pink);
+    font-size: 14pt;
+  }
+  .clue {
+    margin: 0 0 1.2mm;
+    font-size: 9pt;
+    line-height: 1.2;
+  }
+  .clue b {
+    color: var(--blue);
+    display: inline-block;
+    min-width: 6mm;
+  }
+
+  .bottom {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 7mm;
+    align-items: start;
+    margin: 2mm 5mm 0;
+    min-height: 0;
+  }
+  .tajenka h2 {
+    color: var(--pink);
+    margin: 0 0 2mm;
+    font-size: 14pt;
+  }
+  .tajenka-boxes {
+    display: flex;
+    flex-direction: column;
+    gap: 3mm;
+    max-width: 95mm;
+  }
+
+  .tajenka-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 3mm;
+  }
+  .tajenka-box {
+    width: 10mm;
+    height: 10mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+    font-weight: 800;
+  }
+  .tajenka-box.secret1 {
+    border: 1.7px solid var(--pink);
+  }
+
+  .tajenka-box.secret2 {
+    border: 1.7px solid var(--blue);
+  }
+
+  .castle {
+    position: relative;
+    height: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+  .castle img {
+    max-height: 70mm;
+    max-width: 100%;
+    object-fit: contain;
+    filter: grayscale(1) contrast(1.15);
+    mix-blend-mode: multiply;
+
+    margin-top: -40mm;
+  }
+
+  .castle img {
+    display: block;
+    margin-top: 0;
+  }
+
+  @media print {
+    @page { size: A4 portrait; margin: 0; }
+    body { background: white; }
+    .toolbar, .editor { display: none !important; }
+    .sheet {
+      margin: 0;
+      box-shadow: none;
+      width: 210mm;
+      height: 297mm;
+      min-height: 297mm;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .sheet {
+      transform-origin: top left;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button class="primary" onclick="toggleEditor()">Upravit data</button>
+  <button class="secondary" onclick="toggleAnswers()">Zobrazit / skrýt odpovědi</button>
+  <button class="secondary" onclick="window.print()">Tisk / PDF</button>
+</div>
+
+<div id="editor" class="editor hidden">
+  <p>
+    Uprav JSON níže a klikni na <b>Použít změny</b>. U každého hesla nastav:
+    <code>number</code>, <code>direction</code> ("across"/"down"),
+    <code>answer</code>, <code>row</code>, <code>col</code> a <code>clue</code>.
+    Počet políček se vždy odvodí z délky odpovědi.
+  </p>
+  <p>
+    <b>tajenka1Cells</b> určuje růžová políčka a pořadí první tajenky.
+    <b>tajenka2Cells</b> určuje modrá políčka a pořadí druhé tajenky.
+    Např. <code>{"number": 6, "index": 2}</code> = 2. písmeno hesla č. 6.
+  </p>
+  <textarea id="jsonEditor"></textarea>
+  <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+    <button class="primary" onclick="applyJson()">Použít změny</button>
+    <button class="secondary" onclick="downloadData()">Stáhnout data JSON</button>
+    <button class="secondary" onclick="resetData()">Vrátit ukázková data</button>
+  </div>
+  <div id="status"></div>
+</div>
+
+<main class="sheet">
+  <div class="frame-outer"></div>
+  <div class="frame-inner"></div>
+  <div class="top-mark"><span>•••</span> ♥ <span>•••</span></div>
+  <div class="bottom-mark"><span>•••</span> ♥ <span>•••</span></div>
+  <div class="folk tl"></div><div class="folk tr"></div>
+  <div class="folk bl"></div><div class="folk br"></div>
+
+  <h1 id="title">Český ráj</h1>
+
+  <section class="crossword-wrap">
+    <div id="crossword" class="crossword" aria-label="Křížovka"></div>
+  </section>
+
+  <section class="clues">
+    <div class="clue-col">
+      <h2>Vodorovně</h2>
+      <div id="acrossClues"></div>
+    </div>
+    <div class="clue-col">
+      <h2>Svisle</h2>
+      <div id="downClues"></div>
+    </div>
+  </section>
+
+  <section class="bottom">
+    <div class="tajenka">
+      <h2>Tajenka:</h2>
+      <div id="tajenkaBoxes" class="tajenka-boxes"></div>
+    </div>
+    <div class="castle">
+      <img alt="Trosky" src="images/trosky.png">
+    </div>
+  </section>
+</main>
+
+<script>
+const SAMPLE_DATA = {
+  title: "Český ráj",
+  cellSize: 24,
+  entries: [
+    {
+      number: 1, direction: "down", answer: "ČTVRTEK",
+      row: 2, col: 17,
+      clue: "Kdo napsal pohádku Rumcajs?"
+    },
+    {
+      number: 2, direction: "down", answer: "HUMPREHT", // HUMPRECHT
+      row: 4, col: 3,
+      clue: "Kterou stavbu navrhl Carlo Lurago pro Jana Černína z Chudenic?"
+    },
+    {
+      number: 3, direction: "down", answer: "TROSKY",
+      row: 4, col: 7,
+      clue: "Jaký hrad z Českého ráje se objevuje v populární české hře Kingdom Come: Deliverance II?"
+    },
+    {
+      number: 4, direction: "down", answer: "KOST",
+      row: 5, col: 13,
+      clue: "Který (údajně) nedobytný, gotický hrad v Českém ráji si vyráběl světlé a tmavé pivo?"
+    },
+    {
+      number: 5, direction: "across", answer: "RAIS",
+      row: 5, col: 17,
+      clue: "Kdo studoval v místním učitelském ústavu v Jičíně a napsal báseň Cestička k domovu?"
+    },
+    {
+      number: 6, direction: "across", answer: "ŠRÁMEK",
+      row: 6, col: 0,
+      clue: "Který Sobotecký rodák napsal báseň Splav?"
+    },
+    {
+      number: 7, direction: "across", answer: "HOLÝ",
+      row: 6, col: 12,
+      clue: "Jak se jmenuje herec z filmu Prázdniny pro psa, který pronesl: „Jsem Slámovic, ale jmenuju se Mráz!“"
+    },
+    {
+      number: 8, direction: "across", answer: "DRÁBSKÉ_SVĚTNIČKY",
+      row: 8, col: 2,
+      clue: "Jak se nazývá pozůstatek středověkého skalního hradu z 13.století na území Dneboh?"
+    },
+    {
+      number: 9, direction: "down", answer: "BAJAJA",
+      row: 8, col: 5,
+      clue: "Na kterou pohádku filmaři využili krás Hruboskalska? Ke skalnímu loži dostali i jednoho moudrého koně."
+    },
+    {
+      number: 10, direction: "down", answer: "VELIŠ",
+      row: 8, col: 11,
+      clue: "Kde se po mnoho let uchovávala Basilejská kompaktáta (dohoda ukončující husitské války)?"
+    },
+    {
+      number: 11, direction: "across", answer: "SALOMENA",
+      row: 10, col: 9,
+      clue: "Druhé jméno sestry Elišky Kateřiny Smiřické je: (M.S.S)"
+    },
+    {
+      number: 11, direction: "down", answer: "SEIFERT",
+      row: 10, col: 9,
+      clue: "Pro kterého básníka a nositele Nobelovy ceny je Jičín důležitým místem?"
+    },
+    {
+      number: 12, direction: "across", answer: "TRUHLÁŘ",
+      row: 13, col: 0,
+      clue: "Jak se jmenoval rodák z Lomnice nad Popelkou, hrdina československého zahraničního letectva a muž přezdívaný „Nebeský jezdec“ jehož připomíná ocasní křídlo ze Spitfire u Lomnického náměstí?"
+    },
+    {
+      number: 13, direction: "across", answer: "SEMTÍNSKÁ",
+      row: 16, col: 6,
+      clue: "Bývalá památná lípa na území obce Libošovice."
+    },
+    {
+      number: 14, direction: "across", answer: "JINOLICE",
+      row: 9, col: -4,
+      clue: "Jak se jmenuje největší kemp v okolí Jičína?"
+    },
+    {
+      number: 15, direction: "down", answer: "BOTY",
+      row: 11, col: 0,
+      clue: "Co vyráběl Rumcajs než se stal loupežníkem?"
+    },
+  ],
+  // První (růžová) tajenka – první řádek
+  tajenka1Cells: [
+    {number: 1, index: 3},
+    {number: 5, index: 2},
+    {number: 7, index: 3},
+    {number: 8, index: 1},
+    {number: 8, index: 14},
+    {number: 14, index: 7},
+    // {number: 12, direction: "across", index: 4},
+    {number: 13, index: 8},
+    {number: 13, index: 9},
+  ],
+
+  // Druhá (modrá) tajenka – druhý řádek
+  tajenka2Cells: [
+    {number: 15, index: 1},
+    {number: 12, index: 2},
+    {number: 6, index: 3},
+    {number: 8, index: 13},
+    {number: 11, direction: "across" , index: 8},
+  ]
+};
+
+let data = structuredClone(SAMPLE_DATA);
+
+function cleanAnswer(s) {
+  return Array.from(String(s).toUpperCase().replace(/[\s\-–—]+/g, ""));
+}
+
+function entryKey(e) {
+  return `${e.number}|${e.direction}`;
+}
+
+function findTajenkaTarget(number, index, direction) {
+  const candidates = data.entries.filter(e => e.number === number && (!direction || e.direction === direction));
+  if (candidates.length !== 1) return null;
+  const e = candidates[0];
+  const letters = cleanAnswer(e.answer);
+  if (index < 1 || index > letters.length) return null;
+  return {
+    row: e.row + (e.direction === "down" ? index - 1 : 0),
+    col: e.col + (e.direction === "across" ? index - 1 : 0),
+    letter: letters[index - 1]
+  };
+}
+
+function render() {
+  document.getElementById("title").textContent = data.title || "Křížovka";
+  document.documentElement.style.setProperty("--cell", `${data.cellSize || 24}px`);
+
+  const cells = new Map();
+  const starts = new Map();
+  const errors = [];
+
+  for (const e of data.entries) {
+    const letters = cleanAnswer(e.answer);
+    if (!["across", "down"].includes(e.direction)) {
+      errors.push(`Heslo ${e.number}: direction musí být "across" nebo "down".`);
+      continue;
+    }
+    starts.set(`${e.row},${e.col}`, Math.min(starts.get(`${e.row},${e.col}`) ?? Infinity, e.number));
+
+    letters.forEach((letter, i) => {
+      const r = e.row + (e.direction === "down" ? i : 0);
+      const c = e.col + (e.direction === "across" ? i : 0);
+      const key = `${r},${c}`;
+      if (cells.has(key) && cells.get(key).letter !== letter) {
+        errors.push(`Kolize na [${r},${c}]: "${cells.get(key).letter}" × "${letter}" (heslo ${e.number}).`);
+      } else {
+        cells.set(key, { row:r, col:c, letter });
+      }
+    });
+  }
+
+  const tajenka1Targets = [];
+  for (const t of (data.tajenka1Cells || [])) {
+    const target = findTajenkaTarget(t.number, t.index, t.direction);
+    if (!target) {
+      errors.push(`Tajenka 1: nelze jednoznačně najít heslo ${t.number}, index ${t.index}.`);
+    } else {
+      tajenka1Targets.push(target);
+    }
+  }
+
+  const tajenka2Targets = [];
+  for (const t of (data.tajenka2Cells || [])) {
+    const target = findTajenkaTarget(t.number, t.index, t.direction);
+    if (!target) {
+      errors.push(`Tajenka 2: nelze jednoznačně najít heslo ${t.number}, index ${t.index}.`);
+    } else {
+      tajenka2Targets.push(target);
+    }
+  }
+
+  const secret1Keys = new Set(tajenka1Targets.map(t => `${t.row},${t.col}`));
+  const secret2Keys = new Set(tajenka2Targets.map(t => `${t.row},${t.col}`));
+
+  const coords = [...cells.values()];
+  const minRow = Math.min(...coords.map(x => x.row), 1);
+  const maxRow = Math.max(...coords.map(x => x.row), 1);
+  const minCol = Math.min(...coords.map(x => x.col), 1);
+  const maxCol = Math.max(...coords.map(x => x.col), 1);
+
+  const cw = document.getElementById("crossword");
+  cw.innerHTML = "";
+  const cellSize = data.cellSize || 24;
+  cw.style.width = `${(maxCol - minCol + 1) * cellSize}px`;
+  cw.style.height = `${(maxRow - minRow + 1) * cellSize}px`;
+
+  [...cells.values()]
+    .sort((a,b) => a.row - b.row || a.col - b.col)
+    .forEach(cell => {
+      const div = document.createElement("div");
+      const key = `${cell.row},${cell.col}`;
+      let secretClass = "";
+      if (secret1Keys.has(key)) secretClass = " secret1";
+      else if (secret2Keys.has(key)) secretClass = " secret2";
+      div.className = "cell" + secretClass;
+      div.style.left = `${(cell.col - minCol) * cellSize}px`;
+      div.style.top = `${(cell.row - minRow) * cellSize}px`;
+
+      const startNum = starts.get(`${cell.row},${cell.col}`);
+      if (Number.isFinite(startNum)) {
+        const n = document.createElement("span");
+        n.className = "num";
+        n.textContent = startNum;
+        div.appendChild(n);
+      }
+      const letter = document.createElement("span");
+      letter.className = "letter";
+      letter.textContent = cell.letter;
+      div.appendChild(letter);
+      cw.appendChild(div);
+    });
+
+  renderClues("across", "acrossClues");
+  renderClues("down", "downClues");
+  renderTajenka(tajenka1Targets, tajenka2Targets);
+
+  const status = document.getElementById("status");
+  if (status) {
+    status.textContent = errors.length ? "⚠ " + errors.join("\n⚠ ") : "✓ Data jsou bez zjevných kolizí.";
+    status.style.color = errors.length ? "#a40000" : "#176b2c";
+  }
+}
+
+function renderClues(direction, targetId) {
+  const target = document.getElementById(targetId);
+  target.innerHTML = "";
+  data.entries
+    .filter(e => e.direction === direction)
+    .sort((a,b) => a.number - b.number)
+    .forEach(e => {
+      const p = document.createElement("p");
+      p.className = "clue";
+      const b = document.createElement("b");
+      b.textContent = e.number + ".";
+      p.appendChild(b);
+      p.append(" " + e.clue);
+      target.appendChild(p);
+    });
+}
+
+function renderTajenka(targets1, targets2) {
+  const boxWrap = document.getElementById("tajenkaBoxes");
+  boxWrap.innerHTML = "";
+
+  const row1 = document.createElement("div");
+  row1.className = "tajenka-row";
+  targets1.forEach(t => {
+    const box = document.createElement("span");
+    box.className = "tajenka-box secret1";
+    box.textContent = document.body.classList.contains("show-answers") ? t.letter : "";
+    row1.appendChild(box);
+  });
+
+  const row2 = document.createElement("div");
+  row2.className = "tajenka-row";
+  targets2.forEach(t => {
+    const box = document.createElement("span");
+    box.className = "tajenka-box secret2";
+    box.textContent = document.body.classList.contains("show-answers") ? t.letter : "";
+    row2.appendChild(box);
+  });
+
+  boxWrap.appendChild(row1);
+  boxWrap.appendChild(row2);
+}
+
+function toggleEditor() {
+  const ed = document.getElementById("editor");
+  ed.classList.toggle("hidden");
+  if (!ed.classList.contains("hidden")) {
+    document.getElementById("jsonEditor").value = JSON.stringify(data, null, 2);
+  }
+}
+
+function toggleAnswers() {
+  document.body.classList.toggle("show-answers");
+  render();
+}
+
+function applyJson() {
+  try {
+    const parsed = JSON.parse(document.getElementById("jsonEditor").value);
+    data = parsed;
+    localStorage.setItem("crosswordTemplateData", JSON.stringify(data));
+    render();
+  } catch (err) {
+    const status = document.getElementById("status");
+    status.textContent = "Chyba v JSON: " + err.message;
+    status.style.color = "#a40000";
+  }
+}
+
+function resetData() {
+  data = structuredClone(SAMPLE_DATA);
+  localStorage.removeItem("crosswordTemplateData");
+  document.getElementById("jsonEditor").value = JSON.stringify(data, null, 2);
+  render();
+}
+
+function downloadData() {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "krizovka-data.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+try {
+  const saved = localStorage.getItem("crosswordTemplateData");
+  if (saved) data = JSON.parse(saved);
+} catch (_) {}
+
+render();
+</script>
+</body>
+</html>
